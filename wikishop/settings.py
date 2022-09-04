@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'apps.media',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,16 @@ WSGI_APPLICATION = 'wikishop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'wikishop',
+        'CLIENT': {
+            'host': '127.0.0.1',
+            'port': 27017,
+            'username': 'ho3ein',
+            'password': '123456',
+            'authSource': 'admin',
+            'authMechanism': 'SCRAM-SHA-1'
+        }
     }
 }
 
