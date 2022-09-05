@@ -4,10 +4,11 @@ import blurhash
 from PIL import Image
 
 # Create your models here.
+from apps.media.conf import POSTS_IMAGES_DIRECTORY
 
 
 class Media(models.Model):
-    image = models.ImageField(upload_to='posts_images/')
+    image = models.ImageField(upload_to=POSTS_IMAGES_DIRECTORY)
     blurhash = models.CharField(max_length=200)
     aspect_ratio = models.FloatField()
 
