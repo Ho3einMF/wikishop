@@ -8,4 +8,4 @@ from apps.media.models import Media
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     # list_display = ('title', 'publish', 'allow_comments', 'comment_count')
-    readonly_fields = ['blurhash', 'aspect_ratio']
+    readonly_fields = ['blurhash']
