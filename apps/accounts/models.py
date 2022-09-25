@@ -12,7 +12,8 @@ class User(AbstractUser):
     avatar = models.ForeignKey(Media, on_delete=models.CASCADE, blank=True, null=True)
     follower = models.ArrayReferenceField(to='User', on_delete=models.PROTECT, related_name='followers')
     following = models.ArrayReferenceField(to='User', on_delete=models.PROTECT, related_name='followings')
-    # TODO saved_posts = models.ArrayReferenceField(to='Post', on_delete=models.PROTECT)
+    saved_posts = models.ArrayReferenceField(to='content.Post', on_delete=models.CASCADE,
+                                             null=True, blank=True, related_name='saved_posts')
 
     objects = UserManager()
 
