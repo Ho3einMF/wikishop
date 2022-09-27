@@ -80,16 +80,12 @@ WSGI_APPLICATION = 'wikishop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'wikishop',
-        'CLIENT': {
-            'host': '127.0.0.1',
-            'port': 27017,
-            'username': 'ho3ein',
-            'password': '123456',
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1'
-        }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'wikishop',  # Database Name
+        'USER': 'ho3ein',  # User Of Mysql
+        'PASSWORD': '123456',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 

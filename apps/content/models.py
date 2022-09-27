@@ -1,8 +1,6 @@
-from djongo import models
+from django.db import models
 
 # Create your models here.
-from apps.accounts.models import User
-from apps.media.models import Media
 
 
 class Post(models.Model):
@@ -11,7 +9,19 @@ class Post(models.Model):
     price = models.IntegerField(default=0)  # TODO => use DecimalField instead
 
     # Foreign Key Filed
-    publisher = models.ForeignKey(to=User, on_delete=models.PROTECT)
+    publishers = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
 
     # Many to Many fields
-    media_list = models.ArrayReferenceField(to=Media, on_delete=models.CASCADE)
+    media_list = models.ManyToManyField(to='media.Media')
+
+    def __str__(self):
+        return self.title
+
+
+# class Score(models.Model):
+#     score = models.IntegerField(choices=SCORE_CHOICES)
+#     user = models.ArrayReferenceField(to='accounts.User', on_delete=models.PROTECT, limit_choices_to=1)
+#     post = models.ArrayReferenceField(to='content.Post', on_delete=models.PROTECT)
+
+    # def __str__(self):
+    #     return f'{self.user.username} : {self.score}'

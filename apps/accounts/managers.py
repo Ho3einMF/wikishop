@@ -1,7 +1,7 @@
-from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import UserManager
 
 
-class UserManager(BaseUserManager):
+class CustomUserManager(UserManager):
 
     def prevent_self_reference(self, object_id):
         return self.exclude(id=object_id)
