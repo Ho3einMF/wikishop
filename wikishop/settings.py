@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'apps.media',
     'apps.accounts',
     'apps.content',
+
+    # Packages
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
