@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+from apps.content.conf import SCORE_CHOICES
+
+from django.db.models import Avg
 
 
 class Post(models.Model):
@@ -14,14 +17,18 @@ class Post(models.Model):
     # Many to Many fields
     media_list = models.ManyToManyField(to='media.Media')
 
+    @property
+    def score_average(self):
+        return self.scores.aggregate(score_average=Avg('score'))['score_average']
+
     def __str__(self):
         return self.title
 
 
-# class Score(models.Model):
-#     score = models.IntegerField(choices=SCORE_CHOICES)
-#     user = models.ArrayReferenceField(to='accounts.User', on_delete=models.PROTECT, limit_choices_to=1)
-#     post = models.ArrayReferenceField(to='content.Post', on_delete=models.PROTECT)
+class Score(models.Model):
+    score = models.IntegerField(choices=SCORE_CHOICES)
+    user = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
+    post = models.ForeignKey(to='content.Post', on_delete=models.PROTECT, related_name='scores')
 
-    # def __str__(self):
-    #     return f'{self.user.username} : {self.score}'
+    def __str__(self):
+        return f'{self.user.username} : {self.score}'
