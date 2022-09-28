@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
     # Packages
     'rest_framework',
-    'rest_framework.authtoken',
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,7 @@ MEDIA_ROOT = 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
