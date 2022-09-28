@@ -9,7 +9,18 @@ from apps.accounts.models import User, Session
 
 admin.site.unregister(Group)
 
-admin.site.register(Session)
+
+@admin.register(Session)
+class CustomUserAdmin(admin.ModelAdmin):
+    model = Session
+    list_display = ['user', 'ip', 'location', 'device']
+    search_fields = ('user__username',)
+    readonly_fields = ('ip', 'location', 'device')
+
+    fieldsets = (
+        ('Token', {'fields': ('digest', 'token_key', 'user', 'expiry')}),
+        ('Login Information', {'fields': ('ip', 'location', 'device')}),
+    )
 
 
 @admin.register(User)

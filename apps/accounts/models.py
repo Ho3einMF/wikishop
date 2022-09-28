@@ -30,3 +30,6 @@ class Session(AuthToken):
     device = models.CharField(max_length=100, null=True, blank=True)
 
     objects = SessionManager()
+
+    def __str__(self):
+        return f'username : {self.user.username}'
