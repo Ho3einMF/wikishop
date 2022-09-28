@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     # Packages
     'rest_framework',
     'knox',
+    'django_user_agents',  # TODO : use cache for this package
+    'geoip2',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_user_agents.middleware.UserAgentMiddleware',  # package middleware
 ]
 
 ROOT_URLCONF = 'wikishop.urls'
@@ -143,3 +147,5 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 }
+
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')

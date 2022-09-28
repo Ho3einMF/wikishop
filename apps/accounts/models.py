@@ -2,8 +2,9 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 from django.db import models
+from knox.models import AuthToken
 
-from apps.accounts.managers import CustomUserManager
+from apps.accounts.managers import CustomUserManager, SessionManager
 
 
 class User(AbstractUser):
@@ -19,3 +20,13 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Session(AuthToken):
+
+    # extra fields
+    ip = models.GenericIPAddressField(null=True, blank=True)
+    location = models.CharField(max_length=100, null=True, blank=True)
+    device = models.CharField(max_length=100, null=True, blank=True)
+
+    objects = SessionManager()
