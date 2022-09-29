@@ -3,11 +3,14 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
+from knox.models import AuthToken
 
 from apps.accounts.forms import UserModelForm
 from apps.accounts.models import User, Session
 
 admin.site.unregister(Group)
+
+admin.site.unregister(AuthToken)
 
 
 @admin.register(Session)

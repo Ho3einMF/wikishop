@@ -38,16 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Apps
-    'apps.media',
-    'apps.accounts',
-    'apps.content',
-
     # Packages
     'rest_framework',
     'knox',
     'django_user_agents',  # TODO : use cache for this package
     'geoip2',
+
+    # Apps
+    'apps.media',
+    'apps.accounts',
+    'apps.content',
 ]
 
 MIDDLEWARE = [
