@@ -5,10 +5,12 @@ from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.accounts.models import Session
+from apps.accounts.serializers import UserProfileSerializer
 
 
 class LoginView(KnoxLoginView):
@@ -38,3 +40,13 @@ class LoginView(KnoxLoginView):
                             request=request, user=request.user)
         data = self.get_post_response_data(request, token, instance)
         return Response(data)
+
+
+class UserProfileAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserProfileSerializer
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        serializer = UserProfileSerializer(request.user)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
