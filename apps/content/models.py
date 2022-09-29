@@ -5,6 +5,8 @@ from apps.content.conf import SCORE_CHOICES
 
 from django.db.models import Avg
 
+from apps.content.managers import PostManager
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -12,10 +14,12 @@ class Post(models.Model):
     price = models.IntegerField(default=0)  # TODO => use DecimalField instead
 
     # Foreign Key Filed
-    publishers = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
+    publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
 
     # Many to Many fields
     media_list = models.ManyToManyField(to='media.Media')
+
+    object = PostManager()
 
     @property
     def score_average(self):
