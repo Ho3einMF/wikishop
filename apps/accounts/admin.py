@@ -14,15 +14,15 @@ admin.site.unregister(AuthToken)
 
 
 @admin.register(Session)
-class CustomUserAdmin(admin.ModelAdmin):
+class SessionAdmin(admin.ModelAdmin):
     model = Session
-    list_display = ['user', 'ip', 'location', 'device']
+    list_display = ['user', 'ip', 'location', 'operating_system', 'device']
     search_fields = ('user__username',)
-    readonly_fields = ('ip', 'location', 'device')
+    readonly_fields = ('ip', 'location', 'operating_system', 'device')
 
     fieldsets = (
         ('Token', {'fields': ('digest', 'token_key', 'user', 'expiry')}),
-        ('Login Information', {'fields': ('ip', 'location', 'device')}),
+        ('Login Information', {'fields': ('ip', 'location', 'operating_system', 'device')}),
     )
 
 

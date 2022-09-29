@@ -27,6 +27,7 @@ class Session(AuthToken):
     # extra fields
     ip = models.GenericIPAddressField(null=True, blank=True)
     location = models.CharField(max_length=100, null=True, blank=True)
+    operating_system = models.CharField(max_length=100, null=True, blank=True)
     device = models.CharField(max_length=100, null=True, blank=True)
 
     objects = SessionManager()
