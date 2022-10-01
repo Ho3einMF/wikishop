@@ -1,5 +1,9 @@
+from django.contrib.auth import password_validation
 from django.contrib.gis.geoip2 import GeoIP2
 from geoip2.errors import AddressNotFoundError
+from rest_framework import serializers
+
+from apps.accounts.conf import PASSWORDS_MISSMATCH_MESSAGE
 
 
 def get_client_ip(request):
@@ -31,3 +35,12 @@ def get_session_info(request):
     device = request.user_agent.device.family
 
     return ip, location, operating_system, device
+
+
+# this function checks the password1 and password2 (confirmation) are equal
+def check_password_confirmation(password1, password2):
+    if (password1 and password2) and (password1 != password2):
+        raise serializers.ValidationError({"detail": PASSWORDS_MISSMATCH_MESSAGE})
+
+    password_validation.validate_password(password2)
+    return password2

@@ -9,8 +9,22 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE
 from apps.accounts.models import Session
-from apps.accounts.serializers import UserProfileSerializer
+from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer
+
+
+class UserSignupAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        serializer = UserSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'details': USER_CREATION_SUCCESSFUL_MESSAGE}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(KnoxLoginView):
