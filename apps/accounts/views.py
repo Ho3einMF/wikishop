@@ -48,5 +48,5 @@ class UserProfileAPIView(APIView):
 
     @staticmethod
     def get(request, *args, **kwargs):
-        serializer = UserProfileSerializer(request.user)
+        serializer = UserProfileSerializer(request.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
