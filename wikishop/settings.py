@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
@@ -144,8 +145,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# Rest Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 }
 
+# GeoIP Setting for detect location
 GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
+
+# Django-knox-rest Settings (Token's Package)
+TOKEN_TTL = datetime.timedelta(days=1)  # Pacakge default is 10 hours
