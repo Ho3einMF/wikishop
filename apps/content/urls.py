@@ -4,5 +4,5 @@ from apps.content.views import PostDetailAPIView
 
 app_name = 'content'
 urlpatterns = [
-    path('post/<int:id>/', PostDetailAPIView.as_view(), name='post-detail')
+    path('post/<int:post_id>/', PostDetailAPIView.as_view(), name='post-detail')
 ]

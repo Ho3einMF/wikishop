@@ -12,7 +12,7 @@ class Post(models.Model):
     price = models.IntegerField(default=0)  # TODO => use DecimalField instead
 
     # Foreign Key Filed
-    publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
+    publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT, related_name='posts')
 
     # Many to Many fields
     media_list = models.ManyToManyField(to='media.Media')

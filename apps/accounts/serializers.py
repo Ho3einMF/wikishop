@@ -58,3 +58,17 @@ class UserFollowingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('followings_count', 'followings')
+
+
+class UserPostsSerializer(serializers.ModelSerializer):
+    posts = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='content:post-detail',
+        lookup_field='id',
+        lookup_url_kwarg='post_id'
+    )
+
+    class Meta:
+        model = User
+        fields = ('posts',)
