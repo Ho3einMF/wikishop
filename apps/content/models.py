@@ -5,6 +5,8 @@ from apps.content.conf import SCORE_CHOICES
 
 from django.db.models import Avg
 
+from apps.content.managers import PostManager
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -16,6 +18,8 @@ class Post(models.Model):
 
     # Many to Many fields
     media_list = models.ManyToManyField(to='media.Media')
+
+    objects = PostManager()
 
     @property
     def score_average(self):

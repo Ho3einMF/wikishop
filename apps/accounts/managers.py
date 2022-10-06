@@ -3,15 +3,13 @@ from django.contrib.auth.models import UserManager
 from knox.models import AuthTokenManager
 
 from apps.accounts.utils import get_session_info
+from apps.content.models import Post
 
 
 class CustomUserManager(UserManager):
 
-    def prevent_self_reference(self, object_id):
+    def prevent_self_user_reference(self, object_id):
         return self.exclude(id=object_id)
-
-    def get_user(self, user_id):
-        return self.filter(id=user_id)
 
 
 class SessionManager(AuthTokenManager):

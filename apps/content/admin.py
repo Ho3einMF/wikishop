@@ -10,7 +10,7 @@ from apps.content.models import Post, Score
 @admin.register(Post)
 class CustomUserAdmin(ModelAdmin):
     model = Post
-    list_display = ('title', 'price')
+    list_display = ('title', 'publisher', 'price', 'score_average')
     readonly_fields = ('score_average',)
 
 
