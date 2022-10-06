@@ -1,7 +1,8 @@
 from django.urls import path
 
-from apps.content.views import PostListAPIView
+from apps.content.views import PostDetailAPIView
 
+app_name = 'content'
 urlpatterns = [
-    path('posts/', PostListAPIView.as_view(), name='posts-list')
+    path('post/<int:id>/', PostDetailAPIView.as_view(), name='post-detail')
 ]

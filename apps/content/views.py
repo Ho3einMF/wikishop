@@ -1,14 +1,13 @@
 # Create your views here.
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from apps.content.models import Post
-from apps.content.serializers import PostsListSerializer
+from apps.content.serializers import PostDetailSerializer
 
 
-class PostListAPIView(ListAPIView):
+class PostDetailAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = PostsListSerializer
-
-    def get_queryset(self):
-        return Post.objects.get_all_posts()
+    serializer_class = PostDetailSerializer
+    queryset = Post.objects.all()
+    lookup_field = 'id'
