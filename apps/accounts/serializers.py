@@ -23,9 +23,38 @@ class UserSignupSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
 
     avatar = MediaSerializer(read_only=True)
-    follower_count = serializers.ReadOnlyField(source='follower.count')
-    following_count = serializers.ReadOnlyField(source='following.count')
+    followers_count = serializers.ReadOnlyField(source='follower.count')
+    followings_count = serializers.ReadOnlyField(source='following.count')
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'bio', 'avatar', 'follower_count', 'following_count')
+        fields = ('id', 'username', 'bio', 'avatar', 'followers_count', 'followings_count')
+
+
+class UsersListSerializer(serializers.ModelSerializer):
+
+    avatar = MediaSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'avatar')
+
+
+class UserFollowersSerializer(serializers.ModelSerializer):
+
+    followers_count = serializers.ReadOnlyField(source='follower.count')
+    followers = UsersListSerializer(source='follower', read_only=True, many=True)
+
+    class Meta:
+        model = User
+        fields = ('followers_count', 'followers')
+
+
+class UserFollowingsSerializer(serializers.ModelSerializer):
+
+    followings_count = serializers.ReadOnlyField(source='following.count')
+    followings = UsersListSerializer(source='following', read_only=True, many=True)
+
+    class Meta:
+        model = User
+        fields = ('followings_count', 'followings')

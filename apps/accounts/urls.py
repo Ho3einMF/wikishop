@@ -1,7 +1,8 @@
 from django.urls import path
 from knox.views import LogoutView, LogoutAllView
 
-from apps.accounts.views import LoginView, UserProfileAPIView, UserSignupAPIView
+from apps.accounts.views import LoginView, UserProfileAPIView, UserSignupAPIView, UserFollowersAPIView, \
+    UserFollowingsAPIView
 
 app_name = 'accounts'
 urlpatterns = [
@@ -11,5 +12,7 @@ urlpatterns = [
     path(r'logout/', LogoutView.as_view(), name='logout'),
     path(r'logout/all/', LogoutAllView.as_view(), name='logout-all'),
 
-    path('profile/', UserProfileAPIView.as_view(), name='profile')
+    path('profile/', UserProfileAPIView.as_view(), name='profile'),
+    path('followers/', UserFollowersAPIView.as_view(), name='followers'),
+    path('followings/', UserFollowingsAPIView.as_view(), name='followings'),
 ]

@@ -10,6 +10,9 @@ class CustomUserManager(UserManager):
     def prevent_self_reference(self, object_id):
         return self.exclude(id=object_id)
 
+    def get_user(self, user):
+        return self.filter(id=user.id)
+
 
 class SessionManager(AuthTokenManager):
 

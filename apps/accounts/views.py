@@ -5,13 +5,15 @@ from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE
-from apps.accounts.models import Session
-from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer
+from apps.accounts.models import Session, User
+from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
+    UserFollowingsSerializer
 
 
 class UserSignupAPIView(APIView):
@@ -64,3 +66,19 @@ class UserProfileAPIView(APIView):
     def get(request, *args, **kwargs):
         serializer = UserProfileSerializer(request.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UserFollowersAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserFollowersSerializer
+
+    def get_queryset(self):
+        return User.objects.get_user_followers(self.request.user)
+
+
+class UserFollowingsAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserFollowingsSerializer
+
+    def get_queryset(self):
+        return User.objects.get_user(self.request.user)
