@@ -73,7 +73,7 @@ class UserFollowersAPIView(ListAPIView):
     serializer_class = UserFollowersSerializer
 
     def get_queryset(self):
-        return User.objects.get_user_followers(self.request.user)
+        return User.objects.get_user(self.request.user.id)
 
 
 class UserFollowingsAPIView(ListAPIView):
@@ -81,4 +81,4 @@ class UserFollowingsAPIView(ListAPIView):
     serializer_class = UserFollowingsSerializer
 
     def get_queryset(self):
-        return User.objects.get_user(self.request.user)
+        return User.objects.get_user(self.request.user.id)

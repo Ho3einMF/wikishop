@@ -19,7 +19,7 @@ class Post(models.Model):
     # Many to Many fields
     media_list = models.ManyToManyField(to='media.Media')
 
-    object = PostManager()
+    objects = PostManager()
 
     @property
     def score_average(self):

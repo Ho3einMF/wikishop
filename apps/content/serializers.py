@@ -4,7 +4,7 @@ from apps.content.models import Post
 from apps.media.serializers import MediaSerializer
 
 
-class PostListSerializer(serializers.ModelSerializer):
+class PostsListSerializer(serializers.ModelSerializer):
 
     publisher = serializers.ReadOnlyField(source='publisher.username')
     media_list = MediaSerializer(many=True, read_only=True)

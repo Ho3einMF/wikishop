@@ -14,7 +14,7 @@ class User(AbstractUser):
     # Many to Many fields
     follower = models.ManyToManyField(to='User', related_name='followers')
     following = models.ManyToManyField(to='User', related_name='followings')
-    saved_posts = models.ManyToManyField(to='content.Post', related_name='saved_posts')
+    saved_posts = models.ManyToManyField(to='content.Post', related_name='users_that_saved')
 
     objects = CustomUserManager()
 
