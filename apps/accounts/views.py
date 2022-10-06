@@ -6,7 +6,7 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -58,18 +58,14 @@ class LoginView(KnoxLoginView):
         return Response(data)
 
 
-class UserProfileAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+class UserProfileAPIView(RetrieveAPIView):
     serializer_class = UserProfileSerializer
-
-    @staticmethod
-    def get(request, *args, **kwargs):
-        serializer = UserProfileSerializer(request.user, context={'request': request})
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    queryset = User.objects.all()
+    lookup_field = 'id'
+    lookup_url_kwarg = 'user_id'
 
 
 class UserFollowersAPIView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
     serializer_class = UserFollowersSerializer
     queryset = User.objects.all()
     lookup_field = 'id'
@@ -77,7 +73,6 @@ class UserFollowersAPIView(RetrieveAPIView):
 
 
 class UserFollowingsAPIView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
     serializer_class = UserFollowingsSerializer
     queryset = User.objects.all()
     lookup_field = 'id'
@@ -85,7 +80,6 @@ class UserFollowingsAPIView(RetrieveAPIView):
 
 
 class UserPostsAPIView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
     serializer_class = UserPostsSerializer
     queryset = User.objects.all()
     lookup_field = 'id'

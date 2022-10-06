@@ -12,7 +12,7 @@ urlpatterns = [
     path(r'logout/', LogoutView.as_view(), name='logout'),
     path(r'logout/all/', LogoutAllView.as_view(), name='logout-all'),
 
-    path('profile/', UserProfileAPIView.as_view(), name='profile'),
+    path('<int:user_id>/profile/', UserProfileAPIView.as_view(), name='profile'),
     path('<int:user_id>/followers/', UserFollowersAPIView.as_view(), name='followers'),
     path('<int:user_id>/followings/', UserFollowingsAPIView.as_view(), name='followings'),
     path('<int:user_id>/posts/', UserPostsAPIView.as_view(), name='posts'),
