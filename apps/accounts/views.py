@@ -5,7 +5,7 @@ from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -68,20 +68,20 @@ class UserProfileAPIView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class UserFollowersAPIView(ListAPIView):
+class UserFollowersAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserFollowersSerializer
+    queryset = User.objects.all()
+    lookup_field = 'id'
+    lookup_url_kwarg = 'user_id'
 
-    def get_queryset(self):
-        return User.objects.get_user(self.request.user.id)
 
-
-class UserFollowingsAPIView(ListAPIView):
+class UserFollowingsAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserFollowingsSerializer
-
-    def get_queryset(self):
-        return User.objects.get_user(self.request.user.id)
+    queryset = User.objects.all()
+    lookup_field = 'id'
+    lookup_url_kwarg = 'user_id'
 
 
 class UserPostsAPIView(RetrieveAPIView):
