@@ -1,16 +1,17 @@
 from django.contrib.auth import login, user_logged_in
 
 # Create your views here.
+from django.http import Http404
 from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE
+from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR
 from apps.accounts.models import Session, User
 from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
     UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer
@@ -91,3 +92,17 @@ class UserSavedPostsAPIView(RetrieveAPIView):
 
     def get_object(self):
         return User.objects.get_user_by_id(self.request.user.id)
+
+
+class UserFollowAPIView(UpdateAPIView):
+
+    @staticmethod
+    def patch(request, *args, **kwargs):
+        try:
+            User.objects.follow_user(requesting_user=request.user,
+                                     target_user_id=request.data['target_user_id'])
+            return Response(data={'detail': FOLLOW_MESSAGE}, status=status.HTTP_200_OK)
+        except Http404:
+            return Response(data={'detail': USER_NOT_FOUND_ERROR}, status=status.HTTP_404_NOT_FOUND)
+        except KeyError:
+            return Response(data={'target_user_id': 'This field is required'}, status=status.HTTP_400_BAD_REQUEST)

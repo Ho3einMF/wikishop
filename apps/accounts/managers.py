@@ -14,6 +14,9 @@ class CustomUserManager(UserManager):
     def get_user_by_id(self, user_id):
         return get_object_or_404(self, id=user_id)
 
+    def follow_user(self, requesting_user, target_user_id):
+        self.get_user_by_id(target_user_id).followers.add(requesting_user)
+
 
 class SessionManager(AuthTokenManager):
 
