@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR
+from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR, UNFOLLOW_MESSAGE
 from apps.accounts.models import Session, User
 from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
     UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer
@@ -94,7 +94,7 @@ class UserSavedPostsAPIView(RetrieveAPIView):
         return User.objects.get_user_by_id(self.request.user.id)
 
 
-class UserFollowAPIView(UpdateAPIView):
+class UserFollowAPIView(APIView):
 
     @staticmethod
     def patch(request, *args, **kwargs):
@@ -102,6 +102,20 @@ class UserFollowAPIView(UpdateAPIView):
             User.objects.follow_user(requesting_user=request.user,
                                      target_user_id=request.data['target_user_id'])
             return Response(data={'detail': FOLLOW_MESSAGE}, status=status.HTTP_200_OK)
+        except Http404:
+            return Response(data={'detail': USER_NOT_FOUND_ERROR}, status=status.HTTP_404_NOT_FOUND)
+        except KeyError:
+            return Response(data={'target_user_id': 'This field is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserUnfollowAPIView(APIView):
+
+    @staticmethod
+    def patch(request, *args, **kwargs):
+        try:
+            User.objects.unfollow_user(requesting_user=request.user,
+                                       target_user_id=request.data['target_user_id'])
+            return Response(data={'detail': UNFOLLOW_MESSAGE}, status=status.HTTP_200_OK)
         except Http404:
             return Response(data={'detail': USER_NOT_FOUND_ERROR}, status=status.HTTP_404_NOT_FOUND)
         except KeyError:

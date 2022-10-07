@@ -2,7 +2,7 @@ from django.urls import path
 from knox.views import LogoutView, LogoutAllView
 
 from apps.accounts.views import LoginView, UserProfileAPIView, UserSignupAPIView, UserFollowersAPIView, \
-    UserFollowingsAPIView, UserPostsAPIView, UserSavedPostsAPIView, UserFollowAPIView
+    UserFollowingsAPIView, UserPostsAPIView, UserSavedPostsAPIView, UserFollowAPIView, UserUnfollowAPIView
 
 app_name = 'accounts'
 urlpatterns = [
@@ -20,4 +20,5 @@ urlpatterns = [
     path('saved/posts/', UserSavedPostsAPIView.as_view(), name='saved-posts'),
 
     path('follow/', UserFollowAPIView.as_view(), name='follow'),
+    path('unfollow/', UserUnfollowAPIView.as_view(), name='unfollow'),
 ]

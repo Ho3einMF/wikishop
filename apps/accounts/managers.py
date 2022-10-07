@@ -17,6 +17,9 @@ class CustomUserManager(UserManager):
     def follow_user(self, requesting_user, target_user_id):
         self.get_user_by_id(target_user_id).followers.add(requesting_user)
 
+    def unfollow_user(self, requesting_user, target_user_id):
+        self.get_user_by_id(target_user_id).followers.remove(requesting_user)
+
 
 class SessionManager(AuthTokenManager):
 
