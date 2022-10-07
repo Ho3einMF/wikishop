@@ -4,7 +4,6 @@ from knox.models import AuthTokenManager
 from rest_framework.generics import get_object_or_404
 
 from apps.accounts.utils import get_session_info
-from apps.content.models import Post
 
 
 class CustomUserManager(UserManager):

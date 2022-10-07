@@ -33,31 +33,31 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UsersListSerializer(serializers.ModelSerializer):
 
+    profile = serializers.HyperlinkedIdentityField(read_only=True, view_name='accounts:profile',
+                                                   lookup_field='id', lookup_url_kwarg='user_id')
     avatar = MediaSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ('username', 'avatar')
+        fields = ('profile', 'avatar')
 
 
 class UserFollowersSerializer(serializers.ModelSerializer):
 
-    followers_count = serializers.ReadOnlyField(source='follower.count')
     followers = UsersListSerializer(source='follower', read_only=True, many=True)
 
     class Meta:
         model = User
-        fields = ('followers_count', 'followers')
+        fields = ('followers',)
 
 
 class UserFollowingsSerializer(serializers.ModelSerializer):
 
-    followings_count = serializers.ReadOnlyField(source='following.count')
     followings = UsersListSerializer(source='following', read_only=True, many=True)
 
     class Meta:
         model = User
-        fields = ('followings_count', 'followings')
+        fields = ('followings',)
 
 
 class UserPostsSerializer(serializers.ModelSerializer):
