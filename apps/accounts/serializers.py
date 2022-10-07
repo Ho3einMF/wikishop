@@ -61,9 +61,20 @@ class UserFollowingsSerializer(serializers.ModelSerializer):
 
 
 class UserPostsSerializer(serializers.ModelSerializer):
+
     posts = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='content:post-detail',
                                                 lookup_field='id', lookup_url_kwarg='post_id')
 
     class Meta:
         model = User
         fields = ('posts',)
+
+
+class UserSavedPostsSerializer(serializers.ModelSerializer):
+
+    saved_posts = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='content:post-detail',
+                                                      lookup_field='id', lookup_url_kwarg='post_id')
+
+    class Meta:
+        model = User
+        fields = ('saved_posts',)
