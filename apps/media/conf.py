@@ -1,1 +1,1 @@
-POSTS_IMAGES_DIRECTORY = 'posts_images'
+POSTS_MEDIA_DIRECTORY = 'posts_media'
