@@ -5,6 +5,13 @@ from django.contrib.admin import ModelAdmin, display
 from django.utils.html import format_html
 
 from apps.content.models import Post, Score
+from apps.media.models import Media
+
+
+class BookInline(admin.StackedInline):
+    model = Media
+    fields = ('media',)
+    extra = 0
 
 
 @admin.register(Post)
@@ -12,6 +19,8 @@ class CustomUserAdmin(ModelAdmin):
     model = Post
     list_display = ('title', 'publisher', 'price', 'score_average')
     readonly_fields = ('score_average',)
+
+    inlines = [BookInline]
 
 
 @admin.register(Score)
