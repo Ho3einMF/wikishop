@@ -1,15 +1,34 @@
 from rest_framework import serializers
 
 from apps.content.models import Post
-from apps.media.serializers import MediaSerializer
+from apps.media.models import Media
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
 
     publisher = serializers.ReadOnlyField(source='publisher.username')
-    media_list = MediaSerializer(many=True, read_only=True)
+    media_list = serializers.HyperlinkedRelatedField(view_name='media:detail', read_only=True, many=True,
+                                                     lookup_field='id', lookup_url_kwarg='media_id')
     score_average = serializers.ReadOnlyField()
 
     class Meta:
         model = Post
         fields = '__all__'
+
+
+class PostSendSerializer(serializers.ModelSerializer):
+
+    media_list = serializers.ListField(child=serializers.FileField())
+
+    class Meta:
+        model = Post
+        exclude = ('publisher',)
+
+    def create(self, validated_data):
+        media_list = validated_data.pop('media_list')
+        post = Post.objects.create(publisher=self.context['request'].user, **validated_data)
+        Media.objects.bulk_create([
+            Media(media=media, blurhash=Media.objects.generate_blurhash(media), post=post)
+            for media in media_list
+        ])
+        return post

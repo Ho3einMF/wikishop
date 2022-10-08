@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from apps.accounts.models import User
 from apps.accounts.utils import check_password_confirmation
-from apps.media.serializers import MediaSerializer
+from apps.media.serializers import MediaDetailSerializer
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
-    avatar = MediaSerializer(read_only=True)
+    avatar = MediaDetailSerializer(read_only=True)
     followers_count = serializers.ReadOnlyField(source='follower.count')
     followings_count = serializers.ReadOnlyField(source='following.count')
 
@@ -35,7 +35,7 @@ class UsersListSerializer(serializers.ModelSerializer):
 
     profile = serializers.HyperlinkedIdentityField(read_only=True, view_name='accounts:profile',
                                                    lookup_field='id', lookup_url_kwarg='user_id')
-    avatar = MediaSerializer(read_only=True)
+    avatar = MediaDetailSerializer(read_only=True)
 
     class Meta:
         model = User

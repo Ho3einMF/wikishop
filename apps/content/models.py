@@ -16,9 +16,6 @@ class Post(models.Model):
     # Foreign Key Filed
     publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT, related_name='posts')
 
-    # Many to Many fields
-    media_list = models.ManyToManyField(to='media.Media')
-
     objects = PostManager()
 
     @property
