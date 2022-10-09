@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-from apps.content.conf import SCORE_CREATION_SUCCESSFULLY_MESSAGE
+from apps.content.conf import SCORE_CREATION_SUCCESSFULLY_MESSAGE, POST_SEND_SUCCESSFULLY_MESSAGE
 from apps.content.models import Post, Score
 from apps.media.models import Media
 
@@ -35,6 +35,15 @@ class PostSendSerializer(serializers.ModelSerializer):
         ])
         return post
 
+    def to_representation(self, instance):
+        return {
+            'detail': {
+                'message': POST_SEND_SUCCESSFULLY_MESSAGE,
+                'link': reverse(viewname='content:post-detail',
+                                kwargs={'post_id': instance.id}, request=self.context['request'])
+            }
+        }
+
 
 class ScoreSetSerializer(serializers.ModelSerializer):
 
@@ -51,7 +60,7 @@ class ScoreSetSerializer(serializers.ModelSerializer):
         return score
 
     def to_representation(self, instance):
-        data = {
+        return {
             'detail': {
                 'message': SCORE_CREATION_SUCCESSFULLY_MESSAGE,
                 'your_score': instance.score,
@@ -59,4 +68,3 @@ class ScoreSetSerializer(serializers.ModelSerializer):
                                 kwargs={'post_id': instance.post.id}, request=self.context['request'])
             }
         }
-        return data
