@@ -11,3 +11,4 @@ SCORE_CHOICES = (
 
 # Messages
 POST_SEND_SUCCESSFULLY_MESSAGE = _('Post was send successfully')
+SCORE_CREATION_SUCCESSFULLY_MESSAGE = _('Score was recorded successfully')

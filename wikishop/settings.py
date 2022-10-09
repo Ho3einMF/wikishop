@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'wikishop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DB_NAME',  # Database Name
-        'USER': 'MYSQL_USERNAME',  # User Of Mysql
-        'PASSWORD': 'PASSWORD',
+        'NAME': 'wikishop',  # Database Name
+        'USER': 'ho3ein',  # User Of Mysql
+        'PASSWORD': '123456',
         'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }

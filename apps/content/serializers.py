@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 
-from apps.content.models import Post
+from apps.content.conf import SCORE_CREATION_SUCCESSFULLY_MESSAGE
+from apps.content.models import Post, Score
 from apps.media.models import Media
 
 
@@ -32,3 +34,29 @@ class PostSendSerializer(serializers.ModelSerializer):
             for media in media_list
         ])
         return post
+
+
+class ScoreSetSerializer(serializers.ModelSerializer):
+
+    target_post_id = serializers.CharField(source='post')
+
+    class Meta:
+        model = Score
+        exclude = ('user', 'post')
+
+    def create(self, validated_data):
+        score = Score.objects.create(score=validated_data['score'],
+                                     user=self.context['request'].user,
+                                     post_id=validated_data['post'])
+        return score
+
+    def to_representation(self, instance):
+        data = {
+            'detail': {
+                'message': SCORE_CREATION_SUCCESSFULLY_MESSAGE,
+                'your_score': instance.score,
+                'link': reverse(viewname='content:post-detail',
+                                kwargs={'post_id': instance.post.id}, request=self.context['request'])
+            }
+        }
+        return data
