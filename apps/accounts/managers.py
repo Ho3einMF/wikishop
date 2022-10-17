@@ -38,3 +38,6 @@ class SessionManager(AuthTokenManager):
         instance.save()
 
         return instance, token
+
+    def get_user_sessions(self, user_id):
+        return self.filter(user_id=user_id)

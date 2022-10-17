@@ -6,7 +6,7 @@ from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.generics import RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR, UNFOLLOW_MESSAGE
 from apps.accounts.models import Session, User
 from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
-    UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer
+    UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer, UserSessionsSerializer
 
 
 class UserSignupAPIView(APIView):
@@ -57,6 +57,13 @@ class LoginView(KnoxLoginView):
                             request=request, user=request.user)
         data = self.get_post_response_data(request, token, instance)
         return Response(data)
+
+
+class UserSessionsListAPIView(ListAPIView):
+    serializer_class = UserSessionsSerializer
+
+    def get_queryset(self):
+        return Session.objects.get_user_sessions(user_id=self.request.user.id)
 
 
 class UserProfileAPIView(RetrieveAPIView):

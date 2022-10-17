@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.accounts.models import User
+from apps.accounts.models import User, Session
 from apps.accounts.utils import check_password_confirmation
 from apps.media.serializers import MediaDetailSerializer
 
@@ -18,6 +18,13 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(username=validated_data['username'], password=validated_data['password'])
+
+
+class UserSessionsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Session
+        fields = ('ip', 'location', 'operating_system', 'device')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
