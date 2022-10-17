@@ -12,9 +12,9 @@ class User(AbstractUser):
     avatar = models.ForeignKey(to='media.Media', blank=True, null=True, on_delete=models.PROTECT)
 
     # Many to Many fields
-    follower = models.ManyToManyField(to='User', related_name='followers')
-    following = models.ManyToManyField(to='User', related_name='followings')
-    saved_posts = models.ManyToManyField(to='content.Post', related_name='users_that_saved')
+    follower = models.ManyToManyField(to='User', related_name='followers', blank=True, null=True)
+    following = models.ManyToManyField(to='User', related_name='followings', blank=True, null=True)
+    saved_posts = models.ManyToManyField(to='content.Post', related_name='users_that_saved', blank=True, null=True)
 
     objects = CustomUserManager()
 
