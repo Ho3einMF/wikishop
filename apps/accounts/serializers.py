@@ -11,12 +11,15 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password_confirmation')
+        fields = ('username', 'email', 'password', 'password_confirmation')
 
     def validate_password_confirmation(self, value):
         return check_password_confirmation(self.initial_data['password'], value)
 
     def create(self, validated_data):
+        if 'email' in validated_data:
+            return User.objects.create_user(username=validated_data['username'],
+                                            password=validated_data['password'], email=validated_data['email'])
         return User.objects.create_user(username=validated_data['username'], password=validated_data['password'])
 
 
