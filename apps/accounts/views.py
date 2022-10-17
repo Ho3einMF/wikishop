@@ -6,28 +6,20 @@ from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR, UNFOLLOW_MESSAGE
+from apps.accounts.conf import FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR, UNFOLLOW_MESSAGE
 from apps.accounts.models import Session, User
 from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
     UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer, UserSessionsSerializer
 
 
-class UserSignupAPIView(APIView):
+class UserSignupAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
-
-    @staticmethod
-    def post(request, *args, **kwargs):
-        serializer = UserSignupSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'details': USER_CREATION_SUCCESSFUL_MESSAGE}, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer_class = UserSignupSerializer
 
 
 class LoginView(KnoxLoginView):

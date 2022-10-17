@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE
 from apps.accounts.models import User, Session
 from apps.accounts.utils import check_password_confirmation
 from apps.media.serializers import MediaDetailSerializer
@@ -21,6 +22,9 @@ class UserSignupSerializer(serializers.ModelSerializer):
             return User.objects.create_user(username=validated_data['username'],
                                             password=validated_data['password'], email=validated_data['email'])
         return User.objects.create_user(username=validated_data['username'], password=validated_data['password'])
+
+    def to_representation(self, instance):
+        return {'details': USER_CREATION_SUCCESSFUL_MESSAGE}
 
 
 class UserSessionsSerializer(serializers.ModelSerializer):
