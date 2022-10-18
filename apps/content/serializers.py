@@ -4,13 +4,13 @@ from rest_framework.reverse import reverse
 from apps.content.conf import SCORE_CREATION_SUCCESSFULLY_MESSAGE, POST_SEND_SUCCESSFULLY_MESSAGE
 from apps.content.models import Post, Score
 from apps.media.models import Media
+from apps.media.serializers import MediaDetailSerializer
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
 
     publisher = serializers.ReadOnlyField(source='publisher.username')
-    media_list = serializers.HyperlinkedRelatedField(view_name='media:detail', read_only=True, many=True,
-                                                     lookup_field='id', lookup_url_kwarg='media_id')
+    media_list = MediaDetailSerializer(many=True, read_only=True)
     score_average = serializers.ReadOnlyField()
 
     class Meta:
