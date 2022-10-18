@@ -5,7 +5,6 @@ from django.http import Http404
 from django.utils import timezone
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import status
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -14,7 +13,7 @@ from rest_framework.views import APIView
 from apps.accounts.conf import FOLLOW_MESSAGE, USER_NOT_FOUND_ERROR, UNFOLLOW_MESSAGE
 from apps.accounts.models import Session, User
 from apps.accounts.serializers import UserProfileSerializer, UserSignupSerializer, UserFollowersSerializer, \
-    UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer, UserSessionsSerializer
+    UserFollowingsSerializer, UserPostsSerializer, UserSavedPostsSerializer, UserSessionsSerializer, UserLoginSerializer
 
 
 class UserSignupAPIView(CreateAPIView):
@@ -26,7 +25,7 @@ class LoginView(KnoxLoginView):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
+        serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)

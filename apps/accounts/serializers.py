@@ -1,6 +1,8 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE
+from apps.accounts.conf import USER_CREATION_SUCCESSFUL_MESSAGE, LOGIN_FAILED_REQUIRED_FIELDS_MESSAGE,\
+    LOGIN_FAILED_BY_USERNAME_MESSAGE, LOGIN_FAILED_BY_EMAIL_MESSAGE
 from apps.accounts.models import User, Session
 from apps.accounts.utils import check_password_confirmation
 from apps.media.serializers import MediaDetailSerializer
@@ -25,6 +27,35 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return {'details': USER_CREATION_SUCCESSFUL_MESSAGE}
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False, write_only=True)
+    email = serializers.EmailField(required=False, write_only=True)
+    password = serializers.CharField(trim_whitespace=False, write_only=True)
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if not (username or email):  # at least username or email required => checking this
+            raise serializers.ValidationError(LOGIN_FAILED_REQUIRED_FIELDS_MESSAGE, code='authorization')
+
+        if password:
+
+            if username:
+                user = authenticate(request=self.context.get('request'), username=username, password=password)
+                if not user:
+                    raise serializers.ValidationError(LOGIN_FAILED_BY_USERNAME_MESSAGE, code='authorization')
+
+            elif email:
+                user = authenticate(request=self.context.get('request'), email=email, password=password)
+                if not user:
+                    raise serializers.ValidationError(LOGIN_FAILED_BY_EMAIL_MESSAGE, code='authorization')
+
+        attrs['user'] = user
+        return attrs
 
 
 class UserSessionsSerializer(serializers.ModelSerializer):
