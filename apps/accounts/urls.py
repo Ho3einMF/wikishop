@@ -16,10 +16,10 @@ urlpatterns = [
 
     path('profile/', UserProfileAPIView.as_view(), name='my-profile'),
     path('profile/<int:user_id>/', UserProfileAPIView.as_view(), name='profile'),
-    path('<int:user_id>/followers/', UserFollowersAPIView.as_view(), name='followers'),
-    path('<int:user_id>/followings/', UserFollowingsAPIView.as_view(), name='followings'),
+    path('followers/<int:user_id>/', UserFollowersAPIView.as_view(), name='followers'),
+    path('followings/<int:user_id>/', UserFollowingsAPIView.as_view(), name='followings'),
 
-    path('<int:user_id>/posts/', UserPostsAPIView.as_view(), name='posts'),
+    path('posts/<int:user_id>/', UserPostsAPIView.as_view(), name='posts'),
     path('saved/posts/', UserSavedPostsAPIView.as_view(), name='saved-posts'),
 
     path('follow/', UserFollowAPIView.as_view(), name='follow'),
