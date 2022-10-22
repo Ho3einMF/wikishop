@@ -60,8 +60,11 @@ class UserSessionsListAPIView(ListAPIView):
 class UserProfileAPIView(RetrieveAPIView):
     serializer_class = UserProfileSerializer
     queryset = User.objects.all()
-    lookup_field = 'id'
-    lookup_url_kwarg = 'user_id'
+
+    def get_object(self):
+        if 'user_id' in self.kwargs:
+            return User.objects.get_user_by_id(self.kwargs['user_id'])
+        return User.objects.get_user_by_id(self.request.user.id)
 
 
 class UserFollowersAPIView(RetrieveAPIView):

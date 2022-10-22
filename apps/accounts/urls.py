@@ -14,7 +14,8 @@ urlpatterns = [
     path(r'logout/all/', LogoutAllView.as_view(), name='logout-all'),
     path('sessions/', UserSessionsListAPIView.as_view(), name='sessions'),
 
-    path('<int:user_id>/profile/', UserProfileAPIView.as_view(), name='profile'),
+    path('profile/', UserProfileAPIView.as_view(), name='my-profile'),
+    path('profile/<int:user_id>/', UserProfileAPIView.as_view(), name='profile'),
     path('<int:user_id>/followers/', UserFollowersAPIView.as_view(), name='followers'),
     path('<int:user_id>/followings/', UserFollowingsAPIView.as_view(), name='followings'),
 
