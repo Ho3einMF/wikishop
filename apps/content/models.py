@@ -8,13 +8,21 @@ from django.db.models import Avg
 from apps.content.managers import PostManager
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
     caption = models.TextField(max_length=2200)
     price = models.IntegerField(default=0)  # TODO => use DecimalField instead
 
-    # Foreign Key Filed
+    # Foreign Key Fields
     publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT, related_name='posts')
+    category = models.ForeignKey(to='content.Category', on_delete=models.PROTECT, related_name='posts')
 
     objects = PostManager()
 
