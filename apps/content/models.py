@@ -29,7 +29,7 @@ class Post(models.Model):
 class Score(models.Model):
     score = models.IntegerField(choices=SCORE_CHOICES)
     user = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
-    post = models.ForeignKey(to='content.Post', on_delete=models.PROTECT, related_name='scores')
+    post = models.ForeignKey(to='content.Post', on_delete=models.CASCADE, related_name='scores')
 
     def __str__(self):
         return f'{self.user.username} : {self.score}'
