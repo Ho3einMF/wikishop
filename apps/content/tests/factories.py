@@ -24,5 +24,5 @@ class PostFactory(factory.django.DjangoModelFactory):
     price = random.randint(1000, 10000)
 
     # Foreign Key Fields
-    # publisher = factory.SubFactory(UserFactory)
-    # category = models.ForeignKey(to='content.Category', on_delete=models.PROTECT, related_name='posts')
+    publisher = factory.SubFactory(UserFactory)
+    category = factory.SubFactory(CategoryFactory)
