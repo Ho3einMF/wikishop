@@ -1,7 +1,7 @@
 import factory
 from factory.fuzzy import FuzzyInteger, FuzzyChoice
 
-from apps.accounts.tests.factories import UserFactory
+from apps.accounts.models import User
 from apps.content.models import Category, Post, Score
 
 
@@ -24,8 +24,8 @@ class PostFactory(factory.django.DjangoModelFactory):
     price = FuzzyInteger(1000, 10000)
 
     # Foreign Key Fields
-    publisher = factory.SubFactory(UserFactory)
-    category = factory.SubFactory(CategoryFactory)
+    publisher = factory.Iterator(User.objects.all())
+    category = factory.Iterator(Category.objects.all())
 
 
 class ScoreFactory(factory.django.DjangoModelFactory):
@@ -34,5 +34,5 @@ class ScoreFactory(factory.django.DjangoModelFactory):
         model = Score
 
     score = FuzzyChoice([1, 2, 3, 4, 5])
-    user = factory.SubFactory(UserFactory)
-    post = factory.SubFactory(PostFactory)
+    user = factory.Iterator(User.objects.all())
+    post = factory.Iterator(Post.objects.all())
