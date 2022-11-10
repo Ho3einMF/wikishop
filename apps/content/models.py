@@ -21,8 +21,8 @@ class Post(models.Model):
     price = models.IntegerField(default=0)  # TODO => use DecimalField instead
 
     # Foreign Key Fields
-    publisher = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT, related_name='posts')
-    category = models.ForeignKey(to='content.Category', on_delete=models.PROTECT, related_name='posts')
+    publisher = models.ForeignKey(to='accounts.User', on_delete=models.CASCADE, related_name='posts')
+    category = models.ForeignKey(to='content.Category', on_delete=models.DO_NOTHING, related_name='posts')
 
     objects = PostManager()
 
@@ -36,7 +36,7 @@ class Post(models.Model):
 
 class Score(models.Model):
     score = models.IntegerField(choices=SCORE_CHOICES)
-    user = models.ForeignKey(to='accounts.User', on_delete=models.PROTECT)
+    user = models.ForeignKey(to='accounts.User', on_delete=models.CASCADE)
     post = models.ForeignKey(to='content.Post', on_delete=models.CASCADE, related_name='scores')
 
     def __str__(self):
