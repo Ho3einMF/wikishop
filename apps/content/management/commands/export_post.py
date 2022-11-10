@@ -12,7 +12,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         queryset = Post.objects.all()
-        dataframe = read_frame(queryset)
+        dataframe = read_frame(queryset,
+                               fieldnames=['id', 'title', 'caption', 'price', 'publisher__id', 'category__id'])
 
         if not os.path.exists(POST_EXPORT_DIRECTORY):
             os.mkdir(POST_EXPORT_DIRECTORY)

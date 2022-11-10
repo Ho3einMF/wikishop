@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         queryset = User.objects.all()
-        dataframe = read_frame(queryset)
+        dataframe = read_frame(queryset, fieldnames=['id', 'username', 'first_name', 'last_name', 'email'])
 
         if not os.path.exists(USER_EXPORT_DIRECTORY):
             os.mkdir(USER_EXPORT_DIRECTORY)

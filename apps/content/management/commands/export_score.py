@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         queryset = Score.objects.all()
-        dataframe = read_frame(queryset)
+        dataframe = read_frame(queryset, fieldnames=['id', 'score', 'user__id', 'post__id'])
 
         if not os.path.exists(SCORE_EXPORT_DIRECTORY):
             os.mkdir(SCORE_EXPORT_DIRECTORY)
