@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Directories
 AVATAR_DIRECTORY = 'avatars'
-USER_EXPORT_DIRECTORY = 'data'
+USER_EXPORT_DIRECTORY = 'apps/recommend/data'
 
 # Messages
 

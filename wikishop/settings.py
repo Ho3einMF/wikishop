@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'apps.media',
     'apps.accounts',
     'apps.content',
+    'apps.recommend',
 ]
 
 MIDDLEWARE = [
