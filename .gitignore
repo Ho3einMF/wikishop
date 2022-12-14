@@ -313,4 +313,5 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/django,visualstudiocode,pycharm
 
 geoip
-apps/recommend/data
+apps/recommend/system/data
+apps/recommend/system/*.pickle

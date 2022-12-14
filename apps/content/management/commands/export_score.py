@@ -18,4 +18,4 @@ class Command(BaseCommand):
             os.mkdir(SCORE_EXPORT_DIRECTORY)
 
         dataframe.to_csv(f'{SCORE_EXPORT_DIRECTORY}/score.csv')
-        self.stdout.write('score csv file created in the data directory.')
+        self.stdout.write('score csv file created in the apps/recommend/system/data .')

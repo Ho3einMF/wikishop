@@ -18,4 +18,4 @@ class Command(BaseCommand):
             os.mkdir(CATEGORY_EXPORT_DIRECTORY)
 
         dataframe.to_csv(f'{CATEGORY_EXPORT_DIRECTORY}/category.csv')
-        self.stdout.write('category csv file created in the data directory.')
+        self.stdout.write('category csv file created in the apps/recommend/system/data .')

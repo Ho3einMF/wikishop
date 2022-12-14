@@ -19,4 +19,4 @@ class Command(BaseCommand):
             os.mkdir(POST_EXPORT_DIRECTORY)
 
         dataframe.to_csv(f'{POST_EXPORT_DIRECTORY}/post.csv')
-        self.stdout.write('post csv file created in the data directory.')
+        self.stdout.write('post csv file created in the apps/recommend/system/data .')
