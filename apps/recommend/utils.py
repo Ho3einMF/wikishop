@@ -49,10 +49,10 @@ def get_top_k_items(user_id, top_k, model, interactions, user_id_map, item_id_ma
     top_items_model_ids = np.argsort(-scores)[:top_k]
     top_items_ids = [list(item_id_map)[item_model_id] for item_model_id in top_items_model_ids]
     top_items = Post.objects.get_posts_by_ids(id_list=top_items_ids)
-    return top_items[['id', 'title', 'category__id']]
+    return top_items
 
 
-def sample_recommendation(model, user_id):
+def sample_recommendation(model, user_id, top_k):
 
     dataset = load_dataset()
     user_id_map, item_id_map = get_id_mapping(dataset)
@@ -60,12 +60,12 @@ def sample_recommendation(model, user_id):
     interactions = load_interactions()
 
     known_positives_items = get_top_k_known_positive_items(user_id=user_id,
-                                                           top_k=5,
+                                                           top_k=top_k,
                                                            interactions=interactions,
                                                            user_id_map=user_id_map,
                                                            item_id_map=item_id_map)
 
-    top_k_items = get_top_k_items(user_id=user_id, top_k=5,
+    top_k_items = get_top_k_items(user_id=user_id, top_k=top_k,
                                   model=model, interactions=interactions,
                                   user_id_map=user_id_map, item_id_map=item_id_map)
 
