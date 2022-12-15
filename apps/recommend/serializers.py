@@ -4,10 +4,15 @@ from rest_framework.reverse import reverse
 from apps.content.models import Post
 
 
-class UserRecommendationItemSerializer(serializers.ModelSerializer):
+class ItemRecommendItemSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
-        return reverse(viewname='content:post-detail', kwargs={'post_id': instance.id})
+        return {
+            'similar_items': [
+                reverse(viewname='content:post-detail', kwargs={'post_id': item.id}, request=self.context['request'])
+                for item in instance
+            ]
+        }
 
     class Meta:
         model = Post
