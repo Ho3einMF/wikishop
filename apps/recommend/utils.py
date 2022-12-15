@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 
 from apps.content.models import Post
-from apps.recommend.conf import SAVED_MODEL_DIRECTORY, SAVED_DATASET_DIRECTORY
+from apps.recommend.conf import SAVED_MODEL_DIRECTORY, SAVED_DATASET_DIRECTORY, SAVED_ITEM_SIMILARITY_MATRIX_DIRECTORY
 
 
 def load_model():
@@ -70,3 +70,23 @@ def sample_recommendation(model, user_id, top_k):
                                   user_id_map=user_id_map, item_id_map=item_id_map)
 
     return known_positives_items, top_k_items
+
+
+def load_item_similarity_matrix():
+    with open(f'{SAVED_ITEM_SIMILARITY_MATRIX_DIRECTORY}/item_similarity_matrix.pickle', 'rb') as file:
+        loaded_item_similarity_matrix = pickle.load(file)
+    return loaded_item_similarity_matrix
+
+
+def get_top_k_similar_items(item_id, top_k):
+
+    dataset = load_dataset()
+    user_id_map, item_id_map = get_id_mapping(dataset)
+
+    item_similarities_matrix = load_item_similarity_matrix()
+
+    similar_items_model_ids = np.argsort(
+        -item_similarities_matrix[list(item_id_map.keys()).index(item_id)])[0:top_k + 1]
+    top_k_similar_items_ids = [list(item_id_map)[item_model_id] for item_model_id in similar_items_model_ids]
+    top_k_similar_items = Post.objects.get_posts_by_ids(id_list=top_k_similar_items_ids)
+    return top_k_similar_items
