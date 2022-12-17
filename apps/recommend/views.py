@@ -2,8 +2,10 @@
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 
+from apps.content.models import Post
 from apps.recommend.serializers import ItemRecommendUserSerializer, ItemRecommendItemSerializer
-from apps.recommend.utils import load_model, sample_recommendation, get_top_k_similar_items
+from apps.recommend.tasks import sample_recommendation
+from apps.recommend.utils import get_top_k_similar_items
 
 
 # @method_decorator(queries_counter, name='dispatch')
@@ -11,9 +13,11 @@ class ItemRecommendUser(RetrieveAPIView):
     serializer_class = ItemRecommendUserSerializer
 
     def get_object(self):
-        model = load_model()
-        known_positives_items, top_k_items = sample_recommendation(model=model, user_id=self.request.user.id, top_k=5)
-        return known_positives_items, top_k_items
+        known_positives_items_ids, top_k_items_ids = sample_recommendation.delay(user_id=self.request.user.id,
+                                                                                 top_k=5).get()
+        known_positive_items = Post.objects.get_posts_by_ids(id_list=known_positives_items_ids)
+        top_items = Post.objects.get_posts_by_ids(id_list=top_k_items_ids)
+        return known_positive_items, top_items
 
 
 # @method_decorator(queries_counter, name='dispatch')
