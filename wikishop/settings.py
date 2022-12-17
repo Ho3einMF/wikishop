@@ -163,3 +163,6 @@ GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
 REST_KNOX = {
     'TOKEN_TTL': datetime.timedelta(days=1)  # Pacakge default is 10 hours
 }
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
