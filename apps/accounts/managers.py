@@ -1,4 +1,5 @@
 from django.contrib.auth.models import UserManager
+from django.utils import timezone
 
 from knox.models import AuthTokenManager
 from rest_framework.generics import get_object_or_404
@@ -41,3 +42,6 @@ class SessionManager(AuthTokenManager):
 
     def get_user_sessions(self, user_id):
         return self.filter(user_id=user_id)
+
+    def clean_expired_sessions(self):
+        self.filter(expiry__lt=timezone.now()).delete()
